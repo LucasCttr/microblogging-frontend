@@ -37,7 +37,7 @@ export default function ProfileByIdPage() {
 
   return (
     <>
-      <div className="mx-auto max-w-3xl border-l border-r border-zinc-800 dark:border-zinc-700">
+      <div className="mx-auto max-w-3xl border-l border-r border-zinc-800 dark:border-zinc-700 min-h-[calc(100vh-4rem)]">
         <div className="max-w-2xl mx-auto p-4">
           <ProfileCard profile={profile} />
           <div className="flex justify-center mb-4 gap-2">
