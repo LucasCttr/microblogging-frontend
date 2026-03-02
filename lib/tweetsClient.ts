@@ -23,7 +23,7 @@ export async function fetchTweets(params: TweetsParams = {}): Promise<TweetsResp
 
   const base = authorId ? `/api/proxy/users/${encodeURIComponent(authorId)}/tweets` : '/api/proxy/tweets';
   const url = `${base}?${qs.toString()}`;
-  const res = await fetch(url, { credentials: 'same-origin' });
+  const res = await fetch(url, { credentials: 'include' });
   if (!res.ok) throw new Error(`Failed to fetch tweets: ${res.status}`);
   const raw = await res.json();
   // normalize shapes: { items, nextCursor } or { data, cursor } or { items: [], meta: { nextCursor }}
@@ -34,7 +34,7 @@ export async function fetchTweets(params: TweetsParams = {}): Promise<TweetsResp
 
 export async function fetchTweetById(id: string) {
   if (!id) throw new Error('Missing id');
-  const res = await fetch(`/api/proxy/tweets/${encodeURIComponent(id)}`, { credentials: 'same-origin' });
+  const res = await fetch(`/api/proxy/tweets/${encodeURIComponent(id)}`, { credentials: 'include' });
   if (!res.ok) throw new Error(`Failed to fetch tweet ${id}: ${res.status}`);
   return res.json();
 }

@@ -24,7 +24,7 @@ export default function NewTweetComposer({ onTweetCreated }: NewTweetComposerPro
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ content: content.trim() }),
-        credentials: "same-origin",
+        credentials: "include",
       });
       if (!res.ok) {
         const body = await res.text().catch(() => "");

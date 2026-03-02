@@ -1,4 +1,3 @@
-import { getToken } from "next-auth/jwt";
 import { NextResponse } from "next/server";
 
 const PUBLIC_PATHS = ["/auth/login", "/auth/register", "/api/auth", "/_next", "/favicon.ico", "/public"];
@@ -10,8 +9,8 @@ export async function middleware(request: import("next/server").NextRequest) {
     return NextResponse.next();
   }
 
-  const token = await getToken({ req: request });
-  if (!token) {
+  const accessToken = request.cookies.get('accessToken')?.value;
+  if (!accessToken) {
     const loginUrl = new URL("/auth/login", request.url);
     loginUrl.searchParams.set("callbackUrl", request.url);
     return NextResponse.redirect(loginUrl);

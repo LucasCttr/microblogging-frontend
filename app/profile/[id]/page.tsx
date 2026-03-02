@@ -21,7 +21,7 @@ export default function ProfileByIdPage() {
     if (!id) return;
     const fetchProfile = async () => {
       try {
-        const res = await fetch(`/api/proxy/users/${encodeURIComponent(id)}`);
+        const res = await fetch(`/api/proxy/users/${encodeURIComponent(id)}`, { credentials: 'include' });
         if (!res.ok) throw new Error("Failed to fetch profile");
         setProfile(await res.json());
       } catch (err) {

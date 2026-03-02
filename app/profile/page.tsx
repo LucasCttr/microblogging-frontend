@@ -62,7 +62,7 @@ export default function ProfilePage() {
         if (!user?.id) return;
         setLoading(true);
         const params = new URLSearchParams({ authorId: user.id, type });
-        const res = await fetch(`/api/proxy/profile/tweets?${params.toString()}`);
+        const res = await fetch(`/api/proxy/profile/tweets?${params.toString()}`, { credentials: 'include' });
         if (!res.ok) throw new Error("Failed to fetch tweets");
         const data = await res.json();
         if (type === 'tweet') setTweetsLocal(data.data ?? []);

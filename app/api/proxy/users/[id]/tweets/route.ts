@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
 
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
@@ -13,7 +12,7 @@ export async function GET(req: NextRequest) {
   const type = searchParams.get('type');
   const cursor = searchParams.get('cursor');
   const limit = searchParams.get('limit');
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
+  const accessToken = req.cookies.get('accessToken')?.value;
 
   let backendUrl = `${process.env.BACKEND_URL}/tweets?authorId=${encodeURIComponent(id)}`;
   if (type) backendUrl += `&type=${encodeURIComponent(type)}`;
@@ -22,7 +21,7 @@ export async function GET(req: NextRequest) {
 
   const backendRes = await fetch(backendUrl, {
     headers: {
-      Authorization: token ? `Bearer ${(token as any).accessToken}` : '',
+      Authorization: accessToken ? `Bearer ${accessToken}` : '',
       'Content-Type': 'application/json',
     },
   });

@@ -23,10 +23,11 @@ function isTokenExpired(token: string | undefined | null, leewaySeconds = 60) {
 
 async function refreshAccessToken(refreshToken: string) {
   try {
-    const res = await fetch(`${process.env.BACKEND_URL}/auth/refresh`, {
+    // Call local proxy which will use httpOnly refresh cookie
+    const res = await fetch('/api/auth/refresh', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refreshToken }),
+      credentials: 'include',
     });
     if (!res.ok) return null;
     const data = await res.json();

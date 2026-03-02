@@ -1,16 +1,15 @@
 export async function fetchTweetsClient() {
-  const res = await fetch('/api/proxy/tweets');
+  const res = await fetch('/api/proxy/tweets', { credentials: 'include' });
   if (!res.ok) throw new Error('Failed to fetch tweets');
   return res.json();
 }
 
 // Server-side helper for app routes or server components
-import { getToken } from "next-auth/jwt";
+// Server-side helper for app routes or server components
 import { NextRequest } from "next/server";
 
 export async function serverFetch(path: string, req: NextRequest) {
-  const token = await getToken({ req, secret: process.env.NEXTAUTH_SECRET });
-  const accessToken = (token as any)?.accessToken;
+  const accessToken = req.cookies.get('accessToken')?.value;
   const url = `${process.env.BACKEND_URL}${path}`;
   const res = await fetch(url, {
     headers: { Authorization: accessToken ? `Bearer ${accessToken}` : '' },

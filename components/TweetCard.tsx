@@ -35,7 +35,7 @@ export default function TweetCard({ tweet, depth = 0, onRetweet, onShow }: Tweet
       }
       try {
         const res = await fetch(`/api/proxy/tweets/${encodeURIComponent(localTweet.retweetOfId)}`, {
-          credentials: "same-origin",
+          credentials: "include",
         });
         if (!mounted) return;
         if (!res.ok) {
@@ -61,7 +61,7 @@ export default function TweetCard({ tweet, depth = 0, onRetweet, onShow }: Tweet
     const method = localTweet.likedByCurrentUser ? "DELETE" : "POST";
     console.log(`[LIKE] ${method} ${endpoint}`);
     try {
-      const res = await fetch(endpoint, { method, credentials: "same-origin" });
+      const res = await fetch(endpoint, { method, credentials: "include" });
       console.log(`[LIKE] response`, res);
       if (res.ok) {
         const updated = await res.json();
@@ -80,7 +80,7 @@ export default function TweetCard({ tweet, depth = 0, onRetweet, onShow }: Tweet
       try {
         const res = await fetch(endpoint, {
           method: "POST",
-          credentials: "same-origin",
+          credentials: "include",
         });
         console.log(`[RETWEET] response`, res);
         if (res.ok) {
@@ -97,7 +97,7 @@ export default function TweetCard({ tweet, depth = 0, onRetweet, onShow }: Tweet
       console.log(`[RETWEET] DELETE ${endpoint}`);
       // Optimistic UI: desmarcar antes de la respuesta
       try {
-        const res = await fetch(endpoint, { method: "DELETE", credentials: "same-origin" });
+        const res = await fetch(endpoint, { method: "DELETE", credentials: "include" });
         console.log(`[RETWEET] response`, res);
         if (res.ok) {
           const updated = await res.json();

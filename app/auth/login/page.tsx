@@ -1,7 +1,5 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,23 +10,31 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const { data: session, status } = useSession();
-
   useEffect(() => {
-    if (status === "authenticated") {
-      router.replace("/home");
-    }
-  }, [status, router]);
+    // No NextAuth: rely on server to redirect after login
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
-    const res = await signIn("credentials", { redirect: false, email, password });
-    if (res?.error) {
-      setError(res.error);
-      return;
+    try {
+      const r = await fetch('/api/auth/login', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      const data = await r.json();
+      if (!r.ok) {
+        setError(data?.error ?? 'Login failed');
+        return;
+      }
+      // notify other parts of the SPA that auth changed (Header listens for this)
+      try { window.dispatchEvent(new Event('auth:changed')); } catch (e) {}
+      router.push('/home');
+    } catch (e) {
+      setError('Network error');
     }
-    router.push("/home");
   };
 
   return (
