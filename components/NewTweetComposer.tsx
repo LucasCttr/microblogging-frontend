@@ -46,7 +46,7 @@ export default function NewTweetComposer({ onTweetCreated }: NewTweetComposerPro
   }
 
   return (
-    <form onSubmit={handleSubmit} className="p-4 border-b bg-white dark:bg-zinc-900">
+    <form onSubmit={handleSubmit} className="p-4 border-b border-zinc-800 dark:border-zinc-700 bg-white dark:bg-zinc-900">
       <label className="sr-only">Nuevo tweet</label>
       <textarea
         value={content}

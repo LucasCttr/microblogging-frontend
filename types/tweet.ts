@@ -2,6 +2,7 @@ export interface Author {
   id?: string;
   name?: string;
   email?: string;
+  image?: string;
 }
 
 export interface TweetItem {
@@ -11,11 +12,12 @@ export interface TweetItem {
   retweetOf?: TweetItem | null;
   content?: string | null;
   text?: string | null;
-  author?: Author;
+  image?: string | null;
   likesCount?: number;
   retweetsCount?: number;
   repliesCount?: number;
   createdAt?: string;
+  author?: Author;
   // Agregada la propiedad replies para comentarios
   replies?: TweetItem[];
   likedByCurrentUser?: boolean;

@@ -10,9 +10,10 @@ type TweetCardProps = {
   depth?: number;
   onRetweet?: (tweet: Tweet) => void;
   onShow?: (tweet: Tweet) => void;
+  noBorderTop?: boolean;
 };
 
-export default function TweetCard({ tweet, depth = 0, onRetweet, onShow }: TweetCardProps) {
+export default function TweetCard({ tweet, depth = 0, onRetweet, onShow, noBorderTop }: TweetCardProps) {
     const router = useRouter();
   const [localTweet, setLocalTweet] = useState<Tweet>(tweet);
   const [resolved, setResolved] = useState<Tweet | null | undefined>(tweet.retweetOf ?? undefined);
@@ -120,26 +121,74 @@ export default function TweetCard({ tweet, depth = 0, onRetweet, onShow }: Tweet
   }
 
   return (
-    <article className={`${isNested ? "p-3" : "border-b p-4"}`} onClick={handleShowTweet} style={{ cursor: "pointer" }}>
+    <article
+      className={
+        isNested
+          ? "p-3"
+          : `p-4 ${noBorderTop ? '' : 'border-t border-zinc-800 dark:border-zinc-700'}`
+      }
+      onClick={handleShowTweet}
+      style={{ cursor: "pointer" }}
+    >
       <div className="flex items-start gap-3">
-        <div className="h-10 w-10 rounded-full bg-zinc-200 dark:bg-zinc-700" />
+        <div>
+          <a
+            href={localTweet.author?.id ? `/profile/${localTweet.author.id}` : undefined}
+            onClick={e => e.stopPropagation()}
+          >
+            {localTweet.author?.image ? (
+              <img
+                src={localTweet.author.image}
+                alt={localTweet.author?.name ?? 'avatar'}
+                className="h-10 w-10 rounded-full object-cover bg-zinc-200 dark:bg-zinc-700"
+              />
+            ) : (
+              <img
+                src={(() => {
+                  const seed = (localTweet.author?.email ?? localTweet.author?.id ?? localTweet.author?.name ?? 'anon').toString();
+                  return `https://api.dicebear.com/6.x/identicon/svg?seed=${encodeURIComponent(seed)}`;
+                })()}
+                alt={(localTweet.author?.name ?? 'avatar')}
+                className="h-10 w-10 rounded-full object-cover bg-zinc-200 dark:bg-zinc-700"
+              />
+            )}
+          </a>
+        </div>
         <div className="flex-1">
 
           <div className="mt-0.5 mb-1 flex items-center gap-2 text-base text-zinc-700 dark:text-zinc-300" style={{marginTop: '-3px'}}>
-            <strong>{localTweet.author?.name ?? "Unknown"}</strong>
-            {(() => {
-              const email = (localTweet as any).author?.email;
-              const name = (localTweet as any).author?.name;
-              const id = (localTweet as any).author?.id;
-              const handle = email
-                ? String(email).split("@") [0]
-                : name
-                ? String(name).replace(/\s+/g, "").toLowerCase()
-                : id
-                ? String(id).slice(0, 8)
-                : "anon";
-              return <span className="text-sm text-zinc-500 dark:text-zinc-400">@{handle}</span>;
-            })()}
+            <a
+              href={localTweet.author?.id ? `/profile/${localTweet.author.id}` : undefined}
+              onClick={e => e.stopPropagation()}
+              className="font-bold hover:underline"
+            >
+              {localTweet.author?.name ?? "Unknown"}
+            </a>
+            <a
+              href={
+                localTweet.author?.email
+                  ? `/profile/${localTweet.author.email.split("@")[0]}`
+                  : localTweet.author?.id
+                    ? `/profile/${localTweet.author.id}`
+                    : undefined
+              }
+              onClick={e => e.stopPropagation()}
+              className="text-sm text-zinc-500 dark:text-zinc-400 hover:underline"
+            >
+              {(() => {
+                const email = (localTweet as any).author?.email;
+                const name = (localTweet as any).author?.name;
+                const id = (localTweet as any).author?.id;
+                const handle = email
+                  ? String(email).split("@") [0]
+                  : name
+                  ? String(name).replace(/\s+/g, "").toLowerCase()
+                  : id
+                    ? String(id).slice(0, 8)
+                    : "anon";
+                return `@${handle}`;
+              })()}
+            </a>
           </div>
               {currentRetweet && !isNested && (
                 <div className="mb-2 text-[13px] text-blue-500 dark:text-blue-400 flex items-center gap-2" style={{marginTop: '-4px'}}>
@@ -162,7 +211,7 @@ export default function TweetCard({ tweet, depth = 0, onRetweet, onShow }: Tweet
                   {retweeterText && (
                     <p className="mt-05 text-sm text-zinc-900 dark:text-zinc-100">{retweeterText}</p>
                   )}
-                  <div className="mt-3 rounded-md border bg-zinc-50 dark:bg-zinc-800 p-3">
+                  <div className="mt-3 rounded-md border border-zinc-800 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 p-3">
                     <div className="flex items-start gap-3">
                       <div className="h-8 w-8 rounded-full bg-zinc-200 dark:bg-zinc-700" />
                       <div className="flex-1">
@@ -181,7 +230,7 @@ export default function TweetCard({ tweet, depth = 0, onRetweet, onShow }: Tweet
                             </span>
                             <span>💬 {currentRetweet.repliesCount ?? 0}</span>
                           </div>
-                          <span className="text-xs text-zinc-400 dark:text-zinc-500">{currentRetweet.createdAt ?? "Fecha desconocida"}</span>
+                          <span className="text-xs text-zinc-400 dark:text-zinc-500">{currentRetweet.createdAt ? new Date(currentRetweet.createdAt).toLocaleString() : "Fecha desconocida"}</span>
                         </div>
                       </div>
                     </div>
@@ -211,7 +260,7 @@ export default function TweetCard({ tweet, depth = 0, onRetweet, onShow }: Tweet
               </span>
               <span>💬 {localTweet.repliesCount ?? 0}</span>
             </div>
-            <div className="text-xs text-zinc-400 dark:text-zinc-500">{localTweet.createdAt ?? "Fecha desconocida"}</div>
+            <div className="text-xs text-zinc-400 dark:text-zinc-500">{localTweet.createdAt ? new Date(localTweet.createdAt).toLocaleString() : "Fecha desconocida"}</div>
           </div>
         </div>
       </div>

@@ -18,7 +18,7 @@ export default function ProfileCard({ profile }: { profile: Profile }) {
     <div className="bg-white dark:bg-zinc-900 rounded-lg shadow p-4 mb-6 flex flex-col items-center justify-center text-center w-full">
       <h2 className="text-2xl font-bold mb-2">{profile.name}</h2>
       <div className="text-sm text-zinc-500 mb-2">{profile.email}</div>
-      <div className="text-xs text-zinc-400 mb-4">Joined: {new Date(profile.createdAt).toLocaleDateString()}</div>
+      <div className="text-xs text-zinc-400 mb-4">Joined: {profile.createdAt ? new Date(profile.createdAt).toLocaleString() : "Fecha desconocida"}</div>
       <div className="flex gap-6 mb-4 justify-center">
         <div>
           <span className="font-bold">{profile.followersCount}</span> Followers

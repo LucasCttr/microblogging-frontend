@@ -18,15 +18,17 @@ export default function FeedClient({ initialTweets, initialCursor }: { initialTw
   };
 
   return (
-    <div className="mx-auto max-w-3xl border-l border-r border-zinc-800 dark:border-zinc-700 min-h-[calc(100vh-4rem)]">
+    <div className="mx-auto max-w-3xl border-l border-r border-white dark:border-white min-h-[calc(100vh-4rem)]">
       <main className="max-w-2xl mx-auto p-4">
-        <section className="divide-y rounded-md overflow-hidden border">
-          <NewTweetComposer onTweetCreated={handleNewTweet} />
+        <section className="rounded-md overflow-hidden border border-zinc-800 dark:border-zinc-700">
+          <div className="border-b-0">
+            <NewTweetComposer onTweetCreated={handleNewTweet} />
+          </div>
           {tweets.length === 0 ? (
             <div className="p-6 text-center text-sm text-zinc-500">No tweets yet</div>
           ) : (
-            tweets.map((t) => (
-              <TweetCard key={t.id} tweet={t} onRetweet={handleNewTweet} />
+            tweets.map((t, i) => (
+              <TweetCard key={t.id} tweet={t} onRetweet={handleNewTweet} noBorderTop={i === 0} />
             ))
           )}
           <div ref={loadMoreRef} />

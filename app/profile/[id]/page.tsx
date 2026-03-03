@@ -37,7 +37,7 @@ export default function ProfileByIdPage() {
 
   return (
     <>
-      <div className="mx-auto max-w-3xl border-l border-r border-zinc-800 dark:border-zinc-700 min-h-[calc(100vh-4rem)]">
+      <div className="mx-auto max-w-3xl border-l border-r border-white dark:border-white min-h-[calc(100vh-4rem)]">
         <div className="max-w-2xl mx-auto p-4">
           <ProfileCard profile={profile} />
           <div className="flex justify-center mb-4 gap-2">
@@ -65,7 +65,7 @@ export default function ProfileByIdPage() {
                 tweetsHook.tweets.length === 0 ? (
                   <div className="text-center text-zinc-500">No tweets yet</div>
                 ) : (
-                  <div className="rounded-md overflow-hidden border">
+                  <div className="rounded-md overflow-hidden border border-zinc-800 dark:border-zinc-700">
                     {tweetsHook.tweets.map((tweet) => (
                       <TweetCard key={tweet.id} tweet={tweet} />
                     ))}
@@ -84,7 +84,7 @@ export default function ProfileByIdPage() {
                 repliesHook.tweets.length === 0 ? (
                   <div className="text-center text-zinc-500">No replies yet</div>
                 ) : (
-                  <div className="rounded-md overflow-hidden border">
+                  <div className="rounded-md overflow-hidden border border-zinc-800 dark:border-zinc-700">
                     {repliesHook.tweets.map((reply) => (
                       <TweetCard key={reply.id} tweet={reply} />
                     ))}
@@ -103,7 +103,7 @@ export default function ProfileByIdPage() {
                 likesHook.tweets.length === 0 ? (
                   <div className="text-center text-zinc-500">No likes yet</div>
                 ) : (
-                  <div className="rounded-md overflow-hidden border">
+                  <div className="rounded-md overflow-hidden border border-zinc-800 dark:border-zinc-700">
                     {likesHook.tweets.map((like) => (
                       <TweetCard key={like.id} tweet={like} />
                     ))}
@@ -122,7 +122,7 @@ export default function ProfileByIdPage() {
                 retweetsHook.tweets.length === 0 ? (
                   <div className="text-center text-zinc-500">No retweets yet</div>
                 ) : (
-                  <div className="rounded-md overflow-hidden border">
+                  <div className="rounded-md overflow-hidden border border-zinc-800 dark:border-zinc-700">
                     {retweetsHook.tweets.map((retweet) => (
                       <TweetCard key={retweet.id} tweet={retweet} />
                     ))}

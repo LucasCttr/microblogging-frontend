@@ -19,5 +19,9 @@ async function fetchTweet(id: string): Promise<Tweet> {
 export default async function TweetDetailPage({ params }: { params: { id: string } }) {
   const { id } = await params;
   const tweet = await fetchTweet(id);
-  return <TweetDetailClient tweet={tweet} />;
+  return (
+    <div className="mx-auto max-w-3xl border-l border-r border-white dark:border-white min-h-[calc(100vh-4rem)]">
+      <TweetDetailClient tweet={tweet} />
+    </div>
+  );
 }

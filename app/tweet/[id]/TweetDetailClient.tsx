@@ -38,12 +38,12 @@ export default function TweetDetailClient({ tweet }: { tweet: Tweet }) {
 
   return (
     <main className="max-w-2xl mx-auto p-4">
-      <div className="rounded-md overflow-hidden border">
+      <div className="rounded-md overflow-hidden border border-zinc-800 dark:border-zinc-700">
         <div className="rounded-t-md">
           <TweetCard tweet={tweet} />
         </div>
-        <section className="border-t rounded-b-md">
-          <form onSubmit={handleCommentSubmit} className="p-4 border-b bg-transparent">
+        <section className="border-t border-zinc-800 dark:border-zinc-700 rounded-b-md">
+          <form onSubmit={handleCommentSubmit} className="p-4 border-b border-zinc-800 dark:border-zinc-700 bg-transparent">
             <label className="sr-only">Nuevo comentario</label>
             <textarea
               value={comment}
