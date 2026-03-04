@@ -1,5 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
-import forwardWithAutoRefresh from "../../_utils";
+import forwardWithAutoRefresh from "../../../_utils";
 
 export async function POST(req: NextRequest, context: any) {
   const params = await (context as any).params;
