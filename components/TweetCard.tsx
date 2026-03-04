@@ -187,13 +187,17 @@ export default function TweetCard({ tweet, depth = 0, onRetweet, onShow, noBorde
           </div>
               {currentRetweet && !isNested && (
                 <div className="mb-2 text-[13px] text-blue-500 dark:text-blue-400 flex items-center gap-2" style={{marginTop: '-4px'}}>
-              <span>🔁</span>
-              <span>{localTweet.author?.name ?? "Someone"} retweeted</span>
-            </div>
+                <svg suppressHydrationWarning className="h-4 w-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <path d="M23 7v6h-6l3.29-3.29L13 4l-1.41 1.41L18.59 10H23zM1 17v-6h6l-3.29 3.29L11 20l1.41-1.41L5.41 14H1z" />
+                </svg>
+                <span>{localTweet.author?.name ?? "Someone"} retweeted</span>
+              </div>
           )}
               {!currentRetweet && localTweet.parentId && !isNested && (
                 <div className="mb-2 text-[13px] text-blue-500 dark:text-blue-400 flex items-center gap-2" style={{marginTop: '-4px'}}>
-              <span>💬</span>
+              <svg suppressHydrationWarning className="h-4 w-4 text-blue-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M21 6h-2v9H7l-4 4V6c0-1.1.9-2 2-2h14c1.1 0 2 .9 2 2z" />
+              </svg>
               <span>{localTweet.author?.name ?? "Someone"} replied</span>
             </div>
           )}
@@ -219,13 +223,24 @@ export default function TweetCard({ tweet, depth = 0, onRetweet, onShow, noBorde
                         <p className="mt-2 text-sm text-zinc-900 dark:text-zinc-100 break-words whitespace-pre-line">{currentRetweet.content ?? currentRetweet.text ?? ""}</p>
                         <div className="mt-2 flex items-center justify-between text-xs text-zinc-500">
                           <div className="flex items-center gap-3">
-                            <span className={currentRetweet.likedByCurrentUser ? "font-bold text-red-500" : ""}>
-                              ❤️ {currentRetweet.likesCount ?? 0}
+                            <span className={`flex items-center gap-2 ${currentRetweet.likedByCurrentUser ? "font-semibold" : ""}`}>
+                              <svg suppressHydrationWarning className={`${currentRetweet.likedByCurrentUser ? "h-5 w-5 text-red-500" : "h-5 w-5 text-zinc-500 dark:text-zinc-400"}`} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 3.99 4 6.5 4c1.74 0 3.41.81 4.5 2.09C12.09 4.81 13.76 4 15.5 4 18.01 4 20 6 20 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                              </svg>
+                              <span className={`${currentRetweet.likedByCurrentUser ? "font-semibold text-zinc-50" : "text-zinc-400 dark:text-zinc-400"}`}>{currentRetweet.likesCount ?? 0}</span>
                             </span>
-                            <span className={currentRetweet.retweetedByCurrentUser ? "font-bold text-blue-500" : ""}>
-                              🔁 {currentRetweet.retweetsCount ?? 0}
+                            <span className={`flex items-center gap-2 ${currentRetweet.retweetedByCurrentUser ? "font-semibold" : ""}`}>
+                              <svg suppressHydrationWarning className={`${currentRetweet.retweetedByCurrentUser ? "h-5 w-5 text-blue-500" : "h-5 w-5 text-zinc-500 dark:text-zinc-400"}`} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                                <path d="M23 7v6h-6l3.29-3.29L13 4l-1.41 1.41L18.59 10H23zM1 17v-6h6l-3.29 3.29L11 20l1.41-1.41L5.41 14H1z" />
+                              </svg>
+                              <span className={`${currentRetweet.retweetedByCurrentUser ? "font-semibold text-zinc-50" : "text-zinc-400 dark:text-zinc-400"}`}>{currentRetweet.retweetsCount ?? 0}</span>
                             </span>
-                            <span>💬 {currentRetweet.repliesCount ?? 0}</span>
+                            <span className="flex items-center gap-2">
+                              <svg suppressHydrationWarning className="h-5 w-5 text-zinc-500 dark:text-zinc-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                                <path d="M21 6h-2v9H7l-4 4V6c0-1.1.9-2 2-2h14c1.1 0 2 .9 2 2z" />
+                              </svg>
+                              <span className="text-zinc-400 dark:text-zinc-400">{currentRetweet.repliesCount ?? 0}</span>
+                            </span>
                           </div>
                           <span className="text-xs text-zinc-400 dark:text-zinc-500">{currentRetweet.createdAt ? new Date(currentRetweet.createdAt).toLocaleString() : "Fecha desconocida"}</span>
                         </div>
@@ -241,21 +256,34 @@ export default function TweetCard({ tweet, depth = 0, onRetweet, onShow, noBorde
 
           <div className="mt-3 flex items-center justify-between text-sm text-zinc-500 tweet-actions">
             <div className="flex items-center gap-4">
-              <span
-                className={localTweet.likedByCurrentUser ? "font-bold text-red-500 cursor-pointer" : "cursor-pointer"}
+              <button
+                type="button"
+                className={`inline-flex items-center gap-2 px-2 py-1 rounded-md transition ${localTweet.likedByCurrentUser ? "bg-transparent font-semibold" : "hover:bg-zinc-800/50 dark:hover:bg-zinc-700/50"}`}
                 onClick={(e) => { e.stopPropagation(); handleLike(); }}
                 title={localTweet.likedByCurrentUser ? "Quitar like" : "Dar like"}
               >
-                ❤️ {localTweet.likesCount ?? 0}
-              </span>
-              <span
-                className={localTweet.retweetedByCurrentUser ? "font-bold text-blue-500 cursor-pointer" : "cursor-pointer"}
+                <svg suppressHydrationWarning className={`${localTweet.likedByCurrentUser ? "h-5 w-5 text-red-500" : "h-5 w-5 text-zinc-500 dark:text-zinc-400"}`} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 3.99 4 6.5 4c1.74 0 3.41.81 4.5 2.09C12.09 4.81 13.76 4 15.5 4 18.01 4 20 6 20 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+                </svg>
+                <span className={`${localTweet.likedByCurrentUser ? "font-semibold text-zinc-50" : "text-zinc-400 dark:text-zinc-400"}`}>{localTweet.likesCount ?? 0}</span>
+              </button>
+              <button
+                type="button"
+                className={`inline-flex items-center gap-2 px-2 py-1 rounded-md transition ${localTweet.retweetedByCurrentUser ? "bg-transparent font-semibold" : "hover:bg-zinc-800/50 dark:hover:bg-zinc-700/50"}`}
                 onClick={(e) => { e.stopPropagation(); handleRetweet(); }}
                 title={localTweet.retweetedByCurrentUser ? "Quitar retweet" : "Dar retweet"}
               >
-                🔁 {localTweet.retweetsCount ?? 0}
-              </span>
-              <span>💬 {localTweet.repliesCount ?? 0}</span>
+                <svg suppressHydrationWarning className={`${localTweet.retweetedByCurrentUser ? "h-5 w-5 text-blue-500" : "h-5 w-5 text-zinc-500 dark:text-zinc-400"}`} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <path d="M23 7v6h-6l3.29-3.29L13 4l-1.41 1.41L18.59 10H23zM1 17v-6h6l-3.29 3.29L11 20l1.41-1.41L5.41 14H1z" />
+                </svg>
+                <span className={`${localTweet.retweetedByCurrentUser ? "font-semibold text-zinc-50" : "text-zinc-400 dark:text-zinc-400"}`}>{localTweet.retweetsCount ?? 0}</span>
+              </button>
+              <div className="inline-flex items-center gap-2 px-2 py-1 text-zinc-400 dark:text-zinc-400">
+                <svg suppressHydrationWarning className="h-5 w-5 text-zinc-500 dark:text-zinc-400" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                  <path d="M21 6h-2v9H7l-4 4V6c0-1.1.9-2 2-2h14c1.1 0 2 .9 2 2z" />
+                </svg>
+                <span>{localTweet.repliesCount ?? 0}</span>
+              </div>
             </div>
             <div className="text-xs text-zinc-400 dark:text-zinc-500">{localTweet.createdAt ? new Date(localTweet.createdAt).toLocaleString() : "Fecha desconocida"}</div>
           </div>

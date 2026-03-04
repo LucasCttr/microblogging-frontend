@@ -1,27 +1,25 @@
 import { NextResponse, NextRequest } from "next/server";
+import forwardWithAutoRefresh from "../../../_utils";
+
 
 export async function POST(req: NextRequest, context: any) {
-  const accessToken = req.cookies.get('accessToken')?.value;
-  if (!accessToken) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   const params = await (context as any).params;
   const id = params?.id;
-  const backendRes = await fetch(`${process.env.BACKEND_URL}/tweets/${encodeURIComponent(id)}/like`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${accessToken}` },
-  });
-  const data = await backendRes.json().catch(() => null);
-  return NextResponse.json(data, { status: backendRes.status });
+  const backendUrl = `${process.env.BACKEND_URL}/tweets/${encodeURIComponent(id)}/like`;
+  const result = await forwardWithAutoRefresh(req, backendUrl, { method: 'POST' });
+  const res = NextResponse.json(result.data, { status: result.status });
+  if (result.newAccessToken) res.cookies.set({ name: 'accessToken', value: result.newAccessToken, httpOnly: true, path: '/' });
+  if (result.newRefreshToken) res.cookies.set({ name: 'refreshToken', value: result.newRefreshToken, httpOnly: true, path: '/' });
+  return res;
 }
 
 export async function DELETE(req: NextRequest, context: any) {
-  const accessToken = req.cookies.get('accessToken')?.value;
-  if (!accessToken) return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   const params = await (context as any).params;
   const id = params?.id;
-  const backendRes = await fetch(`${process.env.BACKEND_URL}/tweets/${encodeURIComponent(id)}/like`, {
-    method: "DELETE",
-    headers: { Authorization: `Bearer ${accessToken}` },
-  });
-  const data = await backendRes.json().catch(() => null);
-  return NextResponse.json(data, { status: backendRes.status });
+  const backendUrl = `${process.env.BACKEND_URL}/tweets/${encodeURIComponent(id)}/like`;
+  const result = await forwardWithAutoRefresh(req, backendUrl, { method: 'DELETE' });
+  const res = NextResponse.json(result.data, { status: result.status });
+  if (result.newAccessToken) res.cookies.set({ name: 'accessToken', value: result.newAccessToken, httpOnly: true, path: '/' });
+  if (result.newRefreshToken) res.cookies.set({ name: 'refreshToken', value: result.newRefreshToken, httpOnly: true, path: '/' });
+  return res;
 }

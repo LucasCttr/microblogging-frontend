@@ -1,17 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import forwardWithAutoRefresh from "../_utils";
+
 
 export async function GET(req: NextRequest) {
-  const accessToken = req.cookies.get('accessToken')?.value;
-  if (!accessToken) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const userId = req.cookies.get('userId')?.value ?? null;
   if (!userId) return NextResponse.json({ error: "User ID not found" }, { status: 400 });
-  const url = `${process.env.BACKEND_URL}/users/${userId}`;
-  const backendRes = await fetch(url, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": "application/json",
-    },
-  });
-  const data = await backendRes.json().catch(() => null);
-  return NextResponse.json(data, { status: backendRes.status });
+  const backendUrl = `${process.env.BACKEND_URL}/users/${userId}`;
+  const result = await forwardWithAutoRefresh(req, backendUrl, { method: 'GET' });
+  const res = NextResponse.json(result.data, { status: result.status });
+  if (result.newAccessToken) res.cookies.set({ name: 'accessToken', value: result.newAccessToken, httpOnly: true, path: '/' });
+  if (result.newRefreshToken) res.cookies.set({ name: 'refreshToken', value: result.newRefreshToken, httpOnly: true, path: '/' });
+  return res;
 }
