@@ -32,18 +32,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          {/* Fixed side gutters to avoid flicker when pages update */}
-          <div className="hidden lg:block fixed inset-y-0 left-0 w-150 bg-black z-0 gutter-left" aria-hidden />
-          <div className="hidden lg:block fixed inset-y-0 right-0 w-150 bg-black z-0 gutter-right" aria-hidden />
-
-          {/* Thin vertical divider lines placed at the inner edge of the gutters (visible, fixed) */}
-          <div className="hidden lg:block fixed inset-y-0 left-150 w-px bg-white/30 z-10 pointer-events-none divider-left" aria-hidden />
-          <div className="hidden lg:block fixed inset-y-0 right-150 w-px bg-white/30 z-10 pointer-events-none divider-right" aria-hidden />
-
-          <div className="relative z-20">
+          <div className="relative z-20 min-h-screen w-full flex flex-col" style={{ backgroundColor: '#18181c' }}>
             <Header />
-            <div className="mx-auto w-full max-w-6xl flex flex-row justify-center relative">
-              <main className="w-full max-w-2xl mx-auto z-10">{children}</main>
+              <div className="mx-auto w-full max-w-3xl flex flex-row justify-center relative border-l border-r border-white/30">
+                <main className="w-full z-10 min-h-screen bg-black px-0" style={{ backgroundColor: '#18181b' }}>{children}</main>
               <aside className="hidden xl:flex flex-col gap-6 fixed right-8 top-24 w-[320px]">
                 <SuggestedUsers />
                 <TrendingTopics />

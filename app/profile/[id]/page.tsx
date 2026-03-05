@@ -37,9 +37,9 @@ export default function ProfileByIdPage() {
 
   return (
     <>
-      <div className="mx-auto max-w-3xl min-h-[calc(100vh-4rem)] px-4">
-        <div className="max-w-2xl mx-auto p-4">
-          <div className="max-w-2xl mx-auto">
+      <div className="w-full min-h-[calc(100vh-4rem)] px-4">
+        <div className="w-full p-4">
+          <div className="w-full">
             <div className="rounded-lg overflow-hidden border border-zinc-800 dark:border-zinc-700 inner-bg">
               <div className="p-4">
                 <ProfileCard profile={profile} onChange={(next: any) => {
