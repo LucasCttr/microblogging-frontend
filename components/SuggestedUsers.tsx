@@ -51,7 +51,7 @@ export default function SuggestedUsers() {
           <div className="text-zinc-400">No suggestions</div>
         ) : (
           <ul className="divide-y divide-zinc-600">
-            {users.slice(0, 6).map((user) => (
+            {users.slice(0, 5).map((user) => (
               <li key={user.id} className="flex items-center gap-3 py-3">
                 <Link href={`/profile/${user.id}`} className="flex items-center gap-3 hover:underline">
                   {user.image ? (

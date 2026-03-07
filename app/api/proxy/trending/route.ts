@@ -4,20 +4,22 @@ import forwardWithAutoRefresh from "../_utils";
 export async function GET(req: NextRequest) {
   const url = new URL(req.url);
   const { searchParams } = url;
-  const backendUrl = new URL(`${process.env.BACKEND_URL}/users`);
-  let hasExcludeFollowed = false;
+  const backendUrl = new URL(`${process.env.BACKEND_URL}/trending`);
+
   let hasLimit = false;
+  let hasCountry = false;
+  let hasIncludeCounts = false;
   for (const [k, v] of searchParams.entries()) {
     if (v) backendUrl.searchParams.set(k, v);
-    if (k === 'excludeFollowed') hasExcludeFollowed = true;
     if (k === 'limit') hasLimit = true;
+    if (k === 'country') hasCountry = true;
+    if (k === 'includeCounts') hasIncludeCounts = true;
   }
 
-  // If the client requests excludeFollowed (suggested users) but doesn't provide a limit,
-  // set a sensible default server-side so the client doesn't need to pass limit every time.
-  if (hasExcludeFollowed && !hasLimit) {
-    backendUrl.searchParams.set('limit', '5');
-  }
+  // Apply sensible defaults server-side if not provided
+  if (!hasLimit) backendUrl.searchParams.set('limit', '10');
+  if (!hasCountry) backendUrl.searchParams.set('country', 'united-states');
+  if (!hasIncludeCounts) backendUrl.searchParams.set('includeCounts', 'true');
 
   const result = await forwardWithAutoRefresh(req, backendUrl.toString(), { method: 'GET' });
   const res = NextResponse.json(result.data, { status: result.status });

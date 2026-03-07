@@ -218,7 +218,7 @@ export default function TweetCard({ tweet, depth = 0, onRetweet, onShow, noBorde
                   )}
                   <div
                     className="mt-3 rounded-md border border-zinc-800 p-3 cursor-pointer transition"
-                    style={{ backgroundColor: '#0b0b0b' }}
+                    style={{ backgroundColor: '#1b1c1f' }}
                     onClick={e => {
                       e.stopPropagation();
                       if (currentRetweet?.id) router.push(`/tweet/${currentRetweet.id}`);
