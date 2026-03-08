@@ -1,4 +1,4 @@
-import FeedClient from "../home/FeedClient";
+import BookmarksClient from "./BookmarksClient";
 import type { Tweet } from "@/types/tweet";
 import { cookies } from 'next/headers';
 
@@ -18,8 +18,15 @@ async function getBookmarks(): Promise<{ items: Tweet[]; nextCursor?: string | n
     const res = await fetch(url, { cache: 'no-store', headers });
     if (!res.ok) return { items: [] };
     const json = await res.json();
+    // Backend may return either an array, or an object with `items`, or an object with `data` containing the array.
     if (Array.isArray(json)) return { items: json };
-    return { items: json.items ?? [], nextCursor: json.nextCursor };
+    const items = Array.isArray(json.items)
+      ? json.items
+      : Array.isArray(json.data)
+      ? json.data
+      : [];
+    const nextCursor = json.nextCursor ?? json.next_cursor ?? null;
+    return { items, nextCursor };
   } catch {
     return { items: [] };
   }
@@ -27,5 +34,5 @@ async function getBookmarks(): Promise<{ items: Tweet[]; nextCursor?: string | n
 
 export default async function BookmarksPage() {
   const { items, nextCursor } = await getBookmarks();
-  return <FeedClient initialTweets={items} initialCursor={nextCursor} />;
+  return <BookmarksClient initialItems={items} initialCursor={nextCursor} />;
 }
