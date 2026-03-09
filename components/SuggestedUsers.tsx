@@ -1,17 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-
-interface User {
-  id: string;
-  name: string;
-  email?: string;
-  image?: string;
-  followersCount?: number;
-  isFollowing?: boolean;
-  isFollowedBy?: boolean;
-  followStatus?: string;
-}
+import { User } from "@/types/user";
 
 export default function SuggestedUsers() {
   const [users, setUsers] = useState<User[]>([]);

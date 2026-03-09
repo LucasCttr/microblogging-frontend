@@ -1,11 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-
-interface TrendingTopic {
-  hashtag: string;
-  count?: number;
-  url?: string | null;
-}
+import { TrendingTopic } from "@/types/trending";
 
 export default function TrendingTopics({ limit = 20, fullWidth = false }: { limit?: number; fullWidth?: boolean }) {
   const [topics, setTopics] = useState<TrendingTopic[]>([]);

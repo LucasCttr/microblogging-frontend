@@ -1,19 +1,8 @@
 "use client";
 import React from "react";
 import FollowButton from "./FollowButton";
+import { Profile } from "@/types/user";
 
-interface Profile {
-  id: string;
-  name: string;
-  email: string;
-  createdAt: string;
-  followersCount: number;
-  followingCount: number;
-  isFollowing: boolean;
-  isFollowedBy: boolean;
-  followStatus: string;
-  image?: string;
-}
 export default function ProfileCard({ profile, onChange }: { profile: Profile; onChange?: (next: any) => void }) {
   const isSelf = profile.followStatus === "self";
   const handle = (profile as any).username ?? (profile as any).handle ?? (profile.email ? profile.email.split("@")[0] : profile.id?.slice(0, 8));

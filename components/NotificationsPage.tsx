@@ -99,22 +99,27 @@ export default function NotificationsPage() {
                 onClick={() => handleClickNotification(it.id, url)}
               >
                 <div className="flex-shrink-0">
-                  {actorImage ? (
-                    <img
-                      src={actorImage}
-                      alt={actorName}
-                      className="h-10 w-10 rounded-full object-cover bg-zinc-200 dark:bg-zinc-700"
-                    />
-                  ) : (
-                    <img
-                      src={(() => {
-                        const seed = (actor.email ?? actor.id ?? actor.username ?? actor.name ?? 'anon').toString();
-                        return `https://api.dicebear.com/6.x/identicon/svg?seed=${encodeURIComponent(seed)}`;
-                      })()}
-                      alt={actorName}
-                      className="h-10 w-10 rounded-full object-cover bg-zinc-200 dark:bg-zinc-700"
-                    />
-                  )}
+                  {(() => {
+                    const provided = Boolean(actorImage && actorImage.trim());
+                    const isGenerated = provided && /dicebear|identicon|gravatar|ui-avatars|avatars\.github/i.test(actorImage as string);
+                    const shouldShowInitial = !provided || isGenerated;
+                    const label = (actorName || 'U').toString();
+                    const initial = String(label).charAt(0).toUpperCase();
+                    if (!shouldShowInitial && actorImage) {
+                      return (
+                        <img
+                          src={actorImage}
+                          alt={actorName}
+                          className="h-10 w-10 rounded-full object-cover bg-zinc-200 dark:bg-zinc-700"
+                        />
+                      );
+                    }
+                    return (
+                      <div className="h-10 w-10 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center text-sm font-medium text-zinc-800 dark:text-zinc-100">
+                        {initial}
+                      </div>
+                    );
+                  })()}
                 </div>
                 <div className="text-sm text-zinc-800 dark:text-zinc-100 truncate">
                   <strong>{actorName}</strong>{" "}

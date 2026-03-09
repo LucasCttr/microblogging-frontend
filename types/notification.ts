@@ -1,5 +1,5 @@
 
-interface NotificationItem {
+export interface NotificationItem {
   id: string;
   actor?: { username?: string; email?: string; handle?: string; id?: string };
   action?: string;

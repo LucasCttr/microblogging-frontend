@@ -1,18 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-
-interface NotificationItem {
-  id: string;
-  actor?: { username?: string; email?: string; handle?: string; id?: string };
-  action?: string;
-  textPreview?: string;
-  createdAt: string;
-  read?: boolean;
-  url?: string;
-  targetType?: string;
-  targetId?: string;
-}
+import { NotificationItem } from "@/types/notification";
 
 export default function NotificationsPage() {
   const [items, setItems] = useState<NotificationItem[]>([]);
@@ -75,6 +64,9 @@ export default function NotificationsPage() {
               else if (actorId) url = `/profile/${actorId}`;
             }
           }
+          const actorLabel = it.actor?.username ?? it.actor?.handle ?? (it.actor?.email ? it.actor.email.split("@")[0] : it.actor?.id) ?? '';
+          const initial = actorLabel ? String(actorLabel).charAt(0).toUpperCase() : 'U';
+
           return (
             <div
               key={it.id}
@@ -82,7 +74,9 @@ export default function NotificationsPage() {
               onClick={() => handleClickNotification(it.id, url)}
             >
               <div className="flex items-start gap-3">
-                <div className="h-8 w-8 rounded-full bg-zinc-200 dark:bg-zinc-700" />
+                <div className="h-8 w-8 rounded-full bg-zinc-200 dark:bg-zinc-700 flex items-center justify-center text-sm font-medium text-zinc-800 dark:text-zinc-100">
+                  {initial}
+                </div>
                 <div className="flex-1">
                   <div className="text-sm text-zinc-800 dark:text-zinc-100"><strong>{it.actor?.username ?? it.actor?.email}</strong> <span className="text-xs text-zinc-500">{it.action}</span></div>
                   {it.textPreview && <div className="text-xs text-zinc-500 mt-1">{it.textPreview}</div>}
