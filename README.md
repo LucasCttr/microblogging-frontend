@@ -12,6 +12,7 @@ El frontend fue desarrollado con Next.js (App Router) y se comunica con una API 
 - Framework: Next.js (App Router)
 - Lenguaje: TypeScript
 - UI: React 19, Tailwind CSS (v4), componentes personalizados
+- HTML5/CSS3
 - Autenticación: NextAuth (gestión de sesiones)
 - Utilidades y estilos: Tailwind CSS, class-variance-authority, clsx
 - Iconos: lucide-react
@@ -26,7 +27,7 @@ El frontend fue desarrollado con Next.js (App Router) y se comunica con una API 
 	![Autenticación](assets/Auth.gif)
 - Feed y paginación: feed infinito con paginación por cursor y normalización de distintas respuestas del backend
 
-	![Feed y paginación](assets/Tweets.gif)
+	![Feed y paginación](assets/Feed.gif)
 - Acciones sobre tweets: crear tweet, responder, dar like, retweet y marcar como favorito (bookmark)
 
 	![Acciones sobre tweets](assets/Tweets.gif)
