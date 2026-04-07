@@ -1,118 +1,118 @@
-# Frontend estilo Twitter (Next.js) — 
+# Twitter-like Frontend (Next.js)
 
 
-## Descripción del proyecto
+## Project Description
 
-Proyecto desarrollado con fines de aprendizaje. Consiste en una aplicación web inspirada en Twitter, con un enfoque minimalista que prioriza las funcionalidades y la arquitectura por sobre el diseño visual.
+This project was developed for learning purposes. It is a web application inspired by Twitter, with a minimalist approach that prioritizes functionality and architecture over visual design.
 
-El frontend fue desarrollado con Next.js (App Router) y se comunica con una API backend a través de rutas proxy. La aplicación implementa una interfaz responsiva y accesible, e incluye funcionalidades como autenticación de usuarios, feed de publicaciones, perfiles, creación de tweets, marcadores (bookmarks), notificaciones y comportamientos cercanos al tiempo real.
+The frontend is built with Next.js (App Router) and communicates with a backend API via proxy routes. The application provides a responsive and accessible interface and includes features such as user authentication, an infinite feed, profiles, tweet creation, bookmarks, notifications, and near real-time behaviors.
 
-## Stack Tecnológico
+## Tech Stack
 
 - Framework: Next.js (App Router)
-- Lenguaje: TypeScript
-- UI: React 19, Tailwind CSS (v4), componentes personalizados
+- Language: TypeScript
+- UI: React 19, Tailwind CSS (v4), custom components
 - HTML5/CSS3
-- Autenticación: NextAuth (gestión de sesiones)
-- Utilidades y estilos: Tailwind CSS, class-variance-authority, clsx
-- Iconos: lucide-react
-- Realtime / Sockets: socket.io-client (cuando aplica)
-- Herramientas: ESLint, TypeScript
-- Despliegue: listo para Vercel / Node (despliegue estándar de Next.js)
+- Authentication: NextAuth (session management)
+- Utilities & styling: Tailwind CSS, class-variance-authority, clsx
+- Icons: lucide-react
+- Realtime / Sockets: socket.io-client (where applicable)
+- Tools: ESLint, TypeScript
+- Deployment: Ready for Vercel / Node (standard Next.js deployment)
 
-## Funcionalidades principales implementadas
+## Main Implemented Features
 
-- Flujos de autenticación: registro, login, refresh de tokens, logout y UI dependiente de sesión
+- Authentication flows: register, login, token refresh, logout, and session-dependent UI
 
-	![Autenticación](assets/Auth.gif)
-- Feed y paginación: feed infinito con paginación por cursor y normalización de distintas respuestas del backend
+	![Authentication](assets/Auth.gif)
+- Feed and pagination: infinite feed with cursor-based pagination and normalization of different backend responses
 
-	![Feed y paginación](assets/Feed.gif)
-- Acciones sobre tweets: crear tweet, responder, dar like, retweet y marcar como favorito (bookmark)
+	![Feed and pagination](assets/Feed.gif)
+- Tweet actions: create tweet, reply, like, retweet, and bookmark
 
-	![Acciones sobre tweets](assets/Tweets.gif)
-- Perfiles: ver perfiles de usuario, seguir/dejar de seguir, contadores y listado de seguidores/siguiendo
+	![Tweet actions](assets/Tweets.gif)
+- Profiles: view user profiles, follow/unfollow, counters, and followers/following lists
 
-	![Perfiles](assets/Profile.gif)
-- Notificaciones: en tiempo real, listado paginado de notificaciones, marcar como leídas y enlaces profundos a contenido
+	![Profiles](assets/Profile.gif)
+- Notifications: real-time notifications, paginated list, mark-as-read, and deep links to content
 
-	![Notificaciones](assets/Notif.gif)
-- Bookmarks: listar, añadir y eliminar marcadores por tweet
+	![Notifications](assets/Notif.gif)
+- Bookmarks: list, add, and remove bookmarks for tweets
 
 	![Bookmarks](assets/Bookmarks.gif)
-- Tendencias y usuarios sugeridos: normalización de respuestas y componentes UI dedicados
+- Trending topics & suggested users: response normalization and dedicated UI components
 
-	![Tendencias](assets/Trending.gif)
-- Tipos compartidos: carpeta `types/` consolidando interfaces TypeScript (Tweet, User/Profile, Notification, TrendingTopic)
-- Biblioteca de componentes: conjunto pequeño de componentes reutilizables (`Button`, `Card`, `Input`) con variantes via `class-variance-authority`
-- Fetch robusto: helpers en `lib/` (`tweetsClient`, `bookmarksClient`) que normalizan distintas formas de respuesta
-- Accesibilidad: elementos semánticos y estilos `focus-visible` en controles interactivos
+	![Trending](assets/Trending.gif)
+- Shared types: the `types/` folder consolidates TypeScript interfaces (Tweet, User/Profile, Notification, TrendingTopic)
+- Component library: a small set of reusable components (`Button`, `Card`, `Input`) with variants via `class-variance-authority`
+- Robust fetching: helpers in `lib/` (`tweetsClient`, `bookmarksClient`) that normalize different response shapes
+- Accessibility: semantic elements and `focus-visible` styles on interactive controls
 
-## Detalles técnicos relevantes
+## Relevant Technical Details
 
-- App Router: Estructura con `app/` y separación entre componentes server/client según conviene.
-- Typescript-first: Modelos de dominio centralizados en `types/` y usados en componentes y librerías.
-- Normalización: Se normalizan distintas formas de respuesta del backend en el cliente (por ejemplo, `normalizeTweet`).
-- Fallbacks de avatar: Se muestran iniciales cuando no hay avatar real; además se ignoran avatares generados automáticamente (dicebear/identicon/gravatar) para mostrar iniciales más consistentes.
-- Mejora progresiva: Componentes que muestran placeholders y estados de carga mientras esperan datos.
-- Proxy de API: El frontend llama a `/api/proxy/*` para facilitar CORS, uso de cookies de auth y adaptación de respuestas.
+- App Router: Structure under `app/` with a server/client separation where appropriate.
+- TypeScript-first: Domain models centralized in `types/` and used across components and libraries.
+- Normalization: The client normalizes different backend response shapes (for example, via `normalizeTweet`).
+- Avatar fallbacks: Initials are shown when there is no real avatar; automatically generated avatars (dicebear/identicon/gravatar) are ignored in favor of more consistent initials.
+- Progressive enhancement: Components show placeholders and loading states while waiting for data.
+- API Proxy: The frontend calls `/api/proxy/*` to simplify CORS handling, use auth cookies, and adapt responses.
 
-## Proxy de API
+## API Proxy
 
-El frontend utiliza rutas proxy locales bajo `/api/proxy/*` para reenviar solicitudes al servidor backend (configurado mediante la variable de entorno `BACKEND_URL`).
+The frontend uses local proxy routes under `/api/proxy/*` to forward requests to the backend server (configured via the `BACKEND_URL` environment variable).
 
-El proxy se usa para:
+The proxy is used to:
 
-- Simplificar el manejo de CORS evitando llamadas cross-origin desde el navegador.
-- Mantener las cookies de autenticación en el mismo origen y facilitar su envío automático en las peticiones.
-- Centralizar la normalización y adaptación de respuestas del backend antes de que la UI las consuma.
+- Simplify CORS handling by avoiding cross-origin requests from the browser.
+- Keep authentication cookies on the same origin and allow them to be sent automatically with requests.
+- Centralize normalization and adaptation of backend responses before the UI consumes them.
 
-Esto permite a la aplicación frontend consumir una API más estable y consistente sin exponer detalles de la implementación del backend.
+This allows the frontend application to consume a more stable and consistent API without exposing backend implementation details.
 
-## Estructura destacada del repositorio
+## Notable Repository Structure
 
-- `app/` — Rutas y páginas de Next.js (App Router)
-- `components/` — Componentes UI reutilizables (TweetCard, ProfileCard, FollowButton, NotificationsPage, etc.)
-- `lib/` — Helpers de fetch y utilidades (`tweetsClient`, `bookmarksClient`, `normalizeTweet`)
-- `types/` — Interfaces TypeScript centralizadas (`tweet.ts`, `user.ts`, `notification.ts`, `trending.ts`)
-- `public/` — Activos estáticos
+- `app/` — Next.js routes and pages (App Router)
+- `components/` — Reusable UI components (TweetCard, ProfileCard, FollowButton, NotificationsPage, etc.)
+- `lib/` — Fetch helpers and utilities (`tweetsClient`, `bookmarksClient`, `normalizeTweet`)
+- `types/` — Centralized TypeScript interfaces (`tweet.ts`, `user.ts`, `notification.ts`, `trending.ts`)
+- `public/` — Static assets
 
-## Scripts disponibles
+## Available Scripts
 
-Ejecutar desde `package.json`:
+Run these from `package.json`:
 
+```bash
+npm run dev      # start development server
+npm run build    # build for production
+npm run start    # start the built app (default port 3001)
+npm run lint     # run ESLint
 ```
-npm run dev      # iniciar servidor de desarrollo
-npm run build    # compilar para producción
-npm run start    # iniciar la app compilada (puerto por defecto 3001)
-npm run lint     # ejecutar ESLint
-```
 
-## Retos y aprendizajes
+## Challenges & Learnings
 
-- Manejar formas inconsistentes de respuesta desde el backend y normalizarlas en el cliente.
-- Integrar NextAuth y gestionar límites entre código server y client.
-- Equilibrar interactividad cliente (actualizaciones optimistas para follow/like/bookmark) con la consistencia eventual del servidor.
-- Implementar scroll infinito y paginación basada en cursor.
+- Handling inconsistent response shapes from the backend and normalizing them on the client.
+- Integrating NextAuth and managing boundaries between server and client code.
+- Balancing client interactivity (optimistic updates for follow/like/bookmark) with eventual consistency from the server.
+- Implementing infinite scroll and cursor-based pagination.
 
 
-## Cómo ejecutar localmente
+## Local Development
 
-1. Copiar el ejemplo de entorno:
+1. Copy the example environment file:
 
 ```bash
 cp .env.example .env.local
 ```
 
-2. Instalar y ejecutar:
+2. Install and run:
 
 ```bash
 npm install
 npm run dev
 ```
 
-3. Abrir `http://localhost:3000`
+3. Open `http://localhost:3000`
 
-## Notas / Contacto
+## Notes / Contact
 
-Este frontend forma parte de un proyecto full-stack. Los endpoints del backend se consumen a través de `/api/proxy/*` y requieren un backend compatible. 
+This frontend is part of a full-stack project. Backend endpoints are consumed through `/api/proxy/*` and require a compatible backend.
